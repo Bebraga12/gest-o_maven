@@ -9,6 +9,7 @@
     String email = request.getParameter("email");
     String userPassword = request.getParameter("password");
 
+    // Login
     if (email != null && userPassword != null) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -33,6 +34,37 @@
             out.println("<script>alert('Ocorreu um erro de conexão com o banco de dados');</script>");
         }
     }
+
+    // Cadastro
+    String emailCadastro = request.getParameter("cadastroEmail");
+    String nomeCadastro = request.getParameter("cadastroName");
+    String cadastroSenha = request.getParameter("cadastroSenha");
+
+    if (emailCadastro != null && nomeCadastro != null && cadastroSenha != null) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, username, password);
+            
+            String sql = "INSERT INTO usuarios (email, nome, senha) VALUES (?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, emailCadastro);
+            statement.setString(2, nomeCadastro);
+            statement.setString(3, cadastroSenha);
+
+            int rowsAffected = statement.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                out.println("<script>alert('Cadastro realizado com sucesso!');</script>");
+            } else {
+                out.println("<script>alert('Erro ao cadastrar.');</script>");
+            }
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("<script>alert('Ocorreu um erro de conexão com o banco de dados');</script>");
+        }
+    }
 %>
 
 <!DOCTYPE html>
@@ -47,7 +79,7 @@
 <body>
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form action="#">
+        <form method="POST" action="">
             <h1>Criar conta</h1>
             <div class="social-container">
                 <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -55,10 +87,10 @@
                 <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <span>ou use seu email para cadastro</span>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Inscreva-se</button>
+            <input type="text" placeholder="Name" name="cadastroName" required />
+            <input type="email" placeholder="Email" name="cadastroEmail" required />
+            <input type="password" placeholder="Password" name="cadastroSenha" required />
+            <button type="submit">Inscreva-se</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
