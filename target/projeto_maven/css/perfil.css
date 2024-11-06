@@ -92,36 +92,35 @@ input {
 	width: 100%;
 }
 
-.rating{
+.rating {
 	position: absolute;
 	top: 100%;
 	left: 50%;
-	transform: translate(-50%,-50%) rotateY(180deg) scale(0.8);
+	transform: translate(-50%, -50%) rotateY(180deg) scale(0.8);
 	display: flex;
-	
-  }
-  
-  .rating input{
+}
+
+.rating input {
 	display: none;
 	position: absolute;
-  }
-  
-  .rating label{
-	  display: block;
-	  cursor: pointer;
-	  width: 50px;
-  }
-  
-  .rating label:before{
+}
+
+.rating label {
+	display: block;
+	cursor: pointer;
+	width: 50px;
+}
+
+.rating label:before {
 	content: '\f005';
 	font-family: fontAwesome;
 	position: relative;
 	display: block;
 	font-size: 50px;
 	color: #0e1316;
-  }
-  
-  .rating label:after{
+}
+
+.rating label:after {
 	content: '\f005';
 	font-family: fontAwesome;
 	position: absolute;
@@ -130,14 +129,15 @@ input {
 	color: #ffff00;
 	top: 0;
 	opacity: 0;
-	transition: .5;
+	transition: .5s;
 	text-shadow: 0 4px 5px rgba(0, 0, 0, .5);
-  }
-  .rating label:hover:after,
-  .rating label:hover ~ label:after,
-  .rating input:checked ~ label:after{
+}
+
+.rating label:hover:after,
+.rating label:hover ~ label:after,
+.rating input:checked ~ label:after {
 	opacity: 1;
-  }
+}
 
 .container {
 	background-color: #fff;
@@ -153,16 +153,24 @@ input {
 	min-height: 700px;
 }
 
-.fotoPerfil{
-	top: 12px;
-	position: absolute;
-	height: 125px;
-	width: 125px;
-	border-radius: 50%;
-	object-fit: cover;
+#fileInput {
+	display: none;
 }
 
-.perfil{
+.fotoPerfil {
+	cursor: pointer;
+	border-radius: 50%;
+	height: 125px;
+	width: 125px;
+	object-fit: cover;
+	transition: opacity 0.3s ease;
+}
+
+.fotoPerfil:hover {
+	opacity: 0.7;
+}
+
+.perfil {
 	position: absolute;
 	top: 12px;
 	display: flex;
@@ -171,13 +179,13 @@ input {
 	width: 500px;
 }
 
-.nomePerfil{
+.nomePerfil {
 	position: absolute;
 	top: 140px;
 }
 
-.agenda{
-	position:absolute;
+.agenda {
+	position: absolute;
 	top: 250px;
 	right: 7vh;
 	height: 50vh;
@@ -185,7 +193,7 @@ input {
 	border-radius: 10px;
 }
 
-.sobreMim{
+.sobreMim {
 	background-color: #dadada56;
 	display: flex;
 	position: absolute;
@@ -195,4 +203,3 @@ input {
 	border-radius: 10px;
 	padding: 12px;
 }
-

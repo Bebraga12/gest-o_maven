@@ -11,7 +11,7 @@ signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
 
-entrarButton.addEventListener('click', (event) => {
+/*entrarButton.addEventListener('click', (event) => {
 	event.preventDefault();
-	window.location.href = 'templates/perfil.html';
-});
+	window.location.href = 'templates/perfil.jsp';
+});*/

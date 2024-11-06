@@ -6,10 +6,17 @@
     String url = "jdbc:mysql://localhost:3306/coursejdbc?useSSL=false";
     String username = "root";
     String password = "5142";
+
+    // Parâmetros de Login
     String email = request.getParameter("email");
     String userPassword = request.getParameter("password");
 
-    // Login
+    // Parâmetros de Cadastro
+    String emailCadastro = request.getParameter("cadastroEmail");
+    String nomeCadastro = request.getParameter("cadastroName");
+    String cadastroSenha = request.getParameter("cadastroSenha");
+
+    // Lógica de Login
     if (email != null && userPassword != null) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -23,7 +30,7 @@
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                response.sendRedirect("templates/perfil.html");
+                response.sendRedirect("templates/perfil.jsp");
             } else {
                 out.println("<script>alert('Email ou senha inválidos!');</script>");
             }
@@ -35,12 +42,8 @@
         }
     }
 
-    // Cadastro
-    String emailCadastro = request.getParameter("cadastroEmail");
-    String nomeCadastro = request.getParameter("cadastroName");
-    String cadastroSenha = request.getParameter("cadastroSenha");
-
-    if (emailCadastro != null && nomeCadastro != null && cadastroSenha != null) {
+    // Lógica de Cadastro
+    else if (emailCadastro != null && nomeCadastro != null && cadastroSenha != null) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, username, password);
@@ -59,11 +62,28 @@
                 out.println("<script>alert('Erro ao cadastrar.');</script>");
             }
 
+            String fileName = request.getParameter("cadastroName");
+            String caminhoCompleto = "C:\\temp\\" + fileName + ".txt";
+
+
+
+        if (fileName != null && !fileName.isEmpty()) {
+            try (FileWriter writer = new FileWriter(caminhoCompleto)) {
+                writer.write("Conteúdo do arquivo criado com sucesso.");
+                out.println("Arquivo '" + fileName + ".txt' criado com sucesso!");
+            } catch (IOException e) {
+                out.println("Erro ao criar o arquivo: " + e.getMessage());
+            }
+        }
+
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
             out.println("<script>alert('Ocorreu um erro de conexão com o banco de dados');</script>");
         }
+        
+        
+
     }
 %>
 
@@ -87,9 +107,9 @@
                 <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <span>ou use seu email para cadastro</span>
-            <input type="text" placeholder="Name" name="cadastroName" required />
-            <input type="email" placeholder="Email" name="cadastroEmail" required />
-            <input type="password" placeholder="Password" name="cadastroSenha" required />
+            <input type="text" name="cadastroName" placeholder="Name" required />
+            <input type="email" name="cadastroEmail" placeholder="Email" required />
+            <input type="password" name="cadastroSenha" placeholder="Password" required />
             <button type="submit">Inscreva-se</button>
         </form>
     </div>
