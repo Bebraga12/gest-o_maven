@@ -2,6 +2,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="javax.servlet.*" %>
 <%@ page import="javax.servlet.http.*" %>
+
 <%
     String url = "jdbc:mysql://localhost:3306/coursejdbc?useSSL=false";
     String username = "root";
@@ -22,23 +23,24 @@
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, username, password);
             
-            String sql = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
+            String sql = "SELECT nome FROM usuarios WHERE email = ? AND senha = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, email);
             statement.setString(2, userPassword);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                response.sendRedirect("templates/perfil.jsp");
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                String nomeUsuario = resultSet.getString("nome");
+                
+                // Redireciona para o JSP personalizado do usuário
+                response.sendRedirect("templates/" + nomeUsuario + ".jsp");
             } else {
-                out.println("<script>alert('Email ou senha inválidos!');</script>");
+                out.println("<script>alert('Email ou senha incorretos.');</script>");
             }
-
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<script>alert('Ocorreu um erro de conexão com o banco de dados');</script>");
+            out.println("<script>alert('Erro de conexão com o banco de dados.');</script>");
         }
     }
 
@@ -62,30 +64,100 @@
                 out.println("<script>alert('Erro ao cadastrar.');</script>");
             }
 
-            String fileName = request.getParameter("cadastroName");
-            String caminhoCompleto = "C:\\temp\\" + fileName + ".txt";
+            // Define o caminho para a pasta templates usando o contexto do servlet
+            String caminhoTemplates = getServletContext().getRealPath("/templates/");
+            String caminhoCompleto = caminhoTemplates + nomeCadastro + ".jsp";
 
+            String siteContent = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Perfil</title>\n" +
+                "    <link rel=\"stylesheet\" href=\"../css/perfil.css\">\n" +
+                "    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\"\n" +
+                "        integrity=\"sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN\" crossorigin=\"anonymous\">\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"perfil\">\n" +
+                "            <img id=\"fotoPerfil\" class=\"fotoPerfil\" src=\"../img/icone.jpg\" alt=\"Foto de Perfil\" />\n" +
+                "            <h1 class=\"nomePerfil\">" + nomeCadastro + "</h1>\n" +
+                "            <input type=\"file\" id=\"fileInput\" accept=\"image/*\" style=\"display: none;\">\n" +
+                "            <div class=\"rating\">\n" +
+                "                <input type=\"radio\" name=\"star\" id=\"star1\"><label for=\"star1\"></label>\n" +
+                "                <input type=\"radio\" name=\"star\" id=\"star2\"><label for=\"star2\"></label>\n" +
+                "                <input type=\"radio\" name=\"star\" id=\"star3\"><label for=\"star3\"></label>\n" +
+                "                <input type=\"radio\" name=\"star\" id=\"star4\"><label for=\"star4\"></label>\n" +
+                "                <input type=\"radio\" name=\"star\" id=\"star5\"><label for=\"star5\"></label>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"sobreMim\">\n" +
+                "            <p id=\"sobreMimTexto\">\n" +
+                "                Insira o texto aqui!\n" +
+                "            </p>\n" +
+                "        </div>\n" +
+                "        <iframe class=\"agenda\"\n" +
+                "            src=\"https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&bgcolor=%23ffffff&showTitle=0&src=ZWMxMDA4M2U5YzU3NjBiZmEyYTUzNTM2NTQ1MmZkMzdhOThjNDkzMzIzODEzNjU5MWNhZmM0N2M2MGFkNTZhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23EF6C00\"\n" +
+                "            style=\"border:solid 1px #777\" width=\"800\" height=\"600\" frameborder=\"0\" scrolling=\"no\"></iframe>\n" +
+                "    </div>\n" +
+                "    <script src=\"https://static.elfsight.com/platform/platform.js\" async></script>\n" +
+                "    <div class=\"elfsight-app-f5ffc010-3838-4534-9cb4-6b66c1adb62f\" data-elfsight-app-lazy></div>\n" +
+                "    <script>\n" +
+                "        document.addEventListener('DOMContentLoaded', function () {\n" +
+                "            const fotoPerfil = document.getElementById('fotoPerfil');\n" +
+                "            const fileInput = document.getElementById('fileInput');\n" +
+                "            const sobreMimTexto = document.getElementById('sobreMimTexto');\n" +
+                "            if (localStorage.getItem('fotoPerfil')) {\n" +
+                "                fotoPerfil.src = localStorage.getItem('fotoPerfil');\n" +
+                "            }\n" +
+                "            if (localStorage.getItem('sobreMimTexto')) {\n" +
+                "                sobreMimTexto.innerHTML = localStorage.getItem('sobreMimTexto');\n" +
+                "            }\n" +
+                "            fotoPerfil.addEventListener('click', function () {\n" +
+                "                fileInput.click();\n" +
+                "            });\n" +
+                "            fileInput.addEventListener('change', function (event) {\n" +
+                "                const file = event.target.files[0];\n" +
+                "                if (file) {\n" +
+                "                    const reader = new FileReader();\n" +
+                "                    reader.onload = function (e) {\n" +
+                "                        fotoPerfil.src = e.target.result;\n" +
+                "                        localStorage.setItem('fotoPerfil', e.target.result);\n" +
+                "                    };\n" +
+                "                    reader.readAsDataURL(file);\n" +
+                "                }\n" +
+                "            });\n" +
+                "            sobreMimTexto.addEventListener('click', function () {\n" +
+                "                const novoTexto = prompt('Edite o texto sobre você:', sobreMimTexto.innerHTML);\n" +
+                "                if (novoTexto !== null) {\n" +
+                "                    sobreMimTexto.innerHTML = novoTexto;\n" +
+                "                    localStorage.setItem('sobreMimTexto', novoTexto);\n" +
+                "                }\n" +
+                "            });\n" +
+                "        });\n" +
+                "    </script>\n" +
+                "</body>\n" +
+                "</html>";
 
-
-        if (fileName != null && !fileName.isEmpty()) {
+            // Cria o arquivo JSP na pasta templates
             try (FileWriter writer = new FileWriter(caminhoCompleto)) {
-                writer.write("Conteúdo do arquivo criado com sucesso.");
-                out.println("Arquivo '" + fileName + ".txt' criado com sucesso!");
+                writer.write(siteContent);
+                out.println("Caminho completo do arquivo: " + caminhoCompleto);
+                out.println("<p>Arquivo '" + nomeCadastro + ".jsp' criado com sucesso!</p>");
             } catch (IOException e) {
-                out.println("Erro ao criar o arquivo: " + e.getMessage());
+                out.println("<p>Erro ao criar o arquivo: " + e.getMessage() + "</p>");
             }
-        }
 
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
             out.println("<script>alert('Ocorreu um erro de conexão com o banco de dados');</script>");
         }
-        
-        
-
     }
 %>
+
+
 
 <!DOCTYPE html>
 <html lang="en">

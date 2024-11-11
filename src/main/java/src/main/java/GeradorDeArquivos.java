@@ -7,7 +7,7 @@ public class GeradorDeArquivos {
     public void criarArquivo(String nomeArquivo) throws IOException {
         // Construir o caminho completo do arquivo
         // Adapte o caminho base de acordo com a sua necessidade
-        String caminhoCompleto = "C:\\Users\\bebra\\OneDrive\\Documentos\\Faculdade\\Gestão do conhecimento\\projeto_maven\\src\\main\\java\\src\\main\\java" + nomeArquivo + ".txt";
+        String caminhoCompleto = "C:\\Users\\bebra\\OneDrive\\Documentos\\Faculdade\\Gestão do conhecimento\\projeto_maven\\src\\main\\webapp\\templates" + nomeArquivo + ".txt";
 
         // Criar o arquivo
         try (FileWriter writer = new FileWriter(caminhoCompleto)) {
