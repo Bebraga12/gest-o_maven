@@ -1,0 +1,84 @@
+String siteContent = " <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="../css/perfil.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="perfil">
+            <img id="fotoPerfil" class="fotoPerfil" src="../img/icone.jpg" alt="Foto de Perfil" />
+            <h1 class="nomePerfil" id="nomePerfil"></h1>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            <div class="rating">
+                <input type="radio" name="star" id="star1"><label for="star1"></label>
+                <input type="radio" name="star" id="star2"><label for="star2"></label>
+                <input type="radio" name="star" id="star3"><label for="star3"></label>
+                <input type="radio" name="star" id="star4"><label for="star4"></label>
+                <input type="radio" name="star" id="star5"><label for="star5"></label>
+            </div>
+        </div>
+        <div class="sobreMim">
+            <p id="sobreMimTexto">
+                Insira o texto aqui!
+            </p>
+        </div>
+        <iframe class="agenda"
+                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&bgcolor=%23ffffff&showTitle=0&src=ZWMxMDA4M2U5YzU3NjBiZmEyYTUzNTM2NTQ1MmZkMzdhOThjNDkzMzIzODEzNjU5MWNhZmM0N2M2MGFkNTZhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23EF6C00"
+                style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+    <div class="elfsight-app-f5ffc010-3838-4534-9cb4-6b66c1adb62f" data-elfsight-app-lazy></div>
+    <script>
+        // Variáveis exclusivas para cada perfil
+        const nomeCadastro = "NomeDoPerfil";  // Substitua "NomeDoPerfil" pelo nome de cada perfil individualmente
+        const fotoKey = `fotoPerfil_${nomeCadastro}`;
+        const sobreMimKey = `sobreMimTexto_${nomeCadastro}`;
+        
+        // Define o nome do perfil no HTML
+        document.getElementById('nomePerfil').textContent = nomeCadastro;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fotoPerfil = document.getElementById('fotoPerfil');
+            const fileInput = document.getElementById('fileInput');
+            const sobreMimTexto = document.getElementById('sobreMimTexto');
+            
+            // Carregar foto e texto específicos de cada perfil do localStorage
+            if (localStorage.getItem(fotoKey)) {
+                fotoPerfil.src = localStorage.getItem(fotoKey);
+            }
+            if (localStorage.getItem(sobreMimKey)) {
+                sobreMimTexto.innerHTML = localStorage.getItem(sobreMimKey);
+            }
+
+            fotoPerfil.addEventListener('click', function () {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        fotoPerfil.src = e.target.result;
+                        localStorage.setItem(fotoKey, e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            sobreMimTexto.addEventListener('click', function () {
+                const novoTexto = prompt('Edite o texto sobre você:', sobreMimTexto.innerHTML);
+                if (novoTexto !== null) {
+                    sobreMimTexto.innerHTML = novoTexto;
+                    localStorage.setItem(sobreMimKey, novoTexto);
+                }
+            });
+        });
+    </script>
+</body>
+</html>"

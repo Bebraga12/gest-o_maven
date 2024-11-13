@@ -224,3 +224,12 @@ input {
 	height: 40px;
 	width: 40px;
 }
+
+.agenda {
+	position: absolute;
+	top: 200px;
+	right: 7vh;
+	height: 50vh;
+	width: 65vh;
+	border-radius: 10px;
+}

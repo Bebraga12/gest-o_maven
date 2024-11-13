@@ -74,7 +74,7 @@
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
                 "    <title>Perfil</title>\n" +
-                "    <link rel=\"stylesheet\" href=\"../css/perfil.css\">\n" +
+                "    <link rel=\"stylesheet\" href=\"perfil.css\">\n" +
                 "    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\"\n" +
                 "        integrity=\"sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN\" crossorigin=\"anonymous\">\n" +
                 "</head>\n" +
@@ -97,9 +97,7 @@
                 "                Insira o texto aqui!\n" +
                 "            </p>\n" +
                 "        </div>\n" +
-                "        <iframe class=\"agenda\"\n" +
-                "            src=\"https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&bgcolor=%23ffffff&showTitle=0&src=ZWMxMDA4M2U5YzU3NjBiZmEyYTUzNTM2NTQ1MmZkMzdhOThjNDkzMzIzODEzNjU5MWNhZmM0N2M2MGFkNTZhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23EF6C00\"\n" +
-                "            style=\"border:solid 1px #777\" width=\"800\" height=\"600\" frameborder=\"0\" scrolling=\"no\"></iframe>\n" +
+                "        <iframe class=\"agenda\" src=\"https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=YmVicmFnYTEyQGdtYWlsLmNvbQ&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZWMxMDA4M2U5YzU3NjBiZmEyYTUzNTM2NTQ1MmZkMzdhOThjNDkzMzIzODEzNjU5MWNhZmM0N2M2MGFkNTZhNUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%23EF6C00&color=%237986CB\" style=\"border:solid 1px #777\" width=\"800\" height=\"600\" frameborder=\"0\" scrolling=\"no\"></iframe>\n" +
                 "    </div>\n" +
                 "    <script src=\"https://static.elfsight.com/platform/platform.js\" async></script>\n" +
                 "    <div class=\"elfsight-app-f5ffc010-3838-4534-9cb4-6b66c1adb62f\" data-elfsight-app-lazy></div>\n" +
@@ -108,11 +106,14 @@
                 "            const fotoPerfil = document.getElementById('fotoPerfil');\n" +
                 "            const fileInput = document.getElementById('fileInput');\n" +
                 "            const sobreMimTexto = document.getElementById('sobreMimTexto');\n" +
-                "            if (localStorage.getItem('fotoPerfil')) {\n" +
-                "                fotoPerfil.src = localStorage.getItem('fotoPerfil');\n" +
+                "            const nomeCadastro = \"" + nomeCadastro + "\";\n" +
+                "            const fotoPerfilKey = 'fotoPerfil_' + nomeCadastro;\n" +
+                "            const sobreMimTextoKey = 'sobreMimTexto_' + nomeCadastro;\n" +
+                "            if (localStorage.getItem(fotoPerfilKey)) {\n" +
+                "                fotoPerfil.src = localStorage.getItem(fotoPerfilKey);\n" +
                 "            }\n" +
-                "            if (localStorage.getItem('sobreMimTexto')) {\n" +
-                "                sobreMimTexto.innerHTML = localStorage.getItem('sobreMimTexto');\n" +
+                "            if (localStorage.getItem(sobreMimTextoKey)) {\n" +
+                "                sobreMimTexto.innerHTML = localStorage.getItem(sobreMimTextoKey);\n" +
                 "            }\n" +
                 "            fotoPerfil.addEventListener('click', function () {\n" +
                 "                fileInput.click();\n" +
@@ -123,7 +124,7 @@
                 "                    const reader = new FileReader();\n" +
                 "                    reader.onload = function (e) {\n" +
                 "                        fotoPerfil.src = e.target.result;\n" +
-                "                        localStorage.setItem('fotoPerfil', e.target.result);\n" +
+                "                        localStorage.setItem(fotoPerfilKey, e.target.result);\n" +
                 "                    };\n" +
                 "                    reader.readAsDataURL(file);\n" +
                 "                }\n" +
@@ -132,13 +133,15 @@
                 "                const novoTexto = prompt('Edite o texto sobre você:', sobreMimTexto.innerHTML);\n" +
                 "                if (novoTexto !== null) {\n" +
                 "                    sobreMimTexto.innerHTML = novoTexto;\n" +
-                "                    localStorage.setItem('sobreMimTexto', novoTexto);\n" +
+                "                    localStorage.setItem(sobreMimTextoKey, novoTexto);\n" +
                 "                }\n" +
                 "            });\n" +
                 "        });\n" +
                 "    </script>\n" +
                 "</body>\n" +
                 "</html>";
+
+
 
             // Cria o arquivo JSP na pasta templates
             try (FileWriter writer = new FileWriter(caminhoCompleto)) {
