@@ -1,4 +1,4 @@
-# Projeto de JSP e MySQL
+# Projeto gestão do conhecimento
 
 Este projeto foi desenvolvido como parte do curso de Engenharia de Software, utilizando JSP e MySQL para implementar uma funcionalidade de login e cadastro com criação de páginas de perfil personalizadas.
 
