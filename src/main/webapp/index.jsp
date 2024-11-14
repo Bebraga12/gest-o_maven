@@ -59,7 +59,7 @@
             int rowsAffected = statement.executeUpdate();
             
             if (rowsAffected > 0) {
-                out.println("<script>alert('Cadastro realizado com sucesso!');</script>");
+                out.println("");
             } else {
                 out.println("<script>alert('Erro ao cadastrar.');</script>");
             }
@@ -146,7 +146,7 @@
             // Cria o arquivo JSP na pasta templates
             try (FileWriter writer = new FileWriter(caminhoCompleto)) {
                 writer.write(siteContent);
-                out.println("Caminho completo do arquivo: " + caminhoCompleto);
+                out.println("");
                 out.println("<p>Arquivo '" + nomeCadastro + ".jsp' criado com sucesso!</p>");
             } catch (IOException e) {
                 out.println("<p>Erro ao criar o arquivo: " + e.getMessage() + "</p>");
